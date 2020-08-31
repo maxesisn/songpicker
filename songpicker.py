@@ -57,7 +57,7 @@ def login():
 
 def get_songid(song_name,cookie):
     search_result = requests.get(
-        f'http://127.0.0.1:3000/search?keywords={song_name}', cookies=cookie)
+        f'http://127.0.0.1:3000/cloudsearch?keywords={song_name}', cookies=cookie)
     search_result = search_result.json()
     song_id = search_result['result']['songs'][0]['id']
     return song_id
