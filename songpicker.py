@@ -33,6 +33,10 @@ async def pick_song(bot, ev):
         await bot.send(ev, "这首歌几乎没评论诶……")
     return
 
+@sv.on_fullmatch("查询网易云状态")
+async def check_login_status(bot,ev):
+    cookie=login()
+    await bot.send(ev,check_login_status(cookie=cookie))
 
 def login():
     try:
@@ -61,4 +65,12 @@ def get_songid(song_name,cookie):
     search_result = search_result.json()
     song_id = search_result['result']['songs'][0]['id']
     return song_id
-    
+
+def check_login_status(cookie):
+    status_result = requests.get(
+        f'http://127.0.0.1:3000/login/status', cookies=cookie)
+    status_result=status_result.json()
+    if status_result['code'] == 200:
+        return f"登录状态正常，用户已登录为：{status_result['profile']['nickname']}"
+    else:
+        return f"登录状态异常，错误码{status_result['code']}"
