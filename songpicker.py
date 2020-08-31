@@ -12,5 +12,6 @@ async def pick_song(bot, ev):
         return
     search_result = requests.get(
         f'http://127.0.0.1:3000/search?keywords={song_name}')
+    search_result=search_result.json()
     song_id = search_result['result']['songs'][0]['id']
     await bot.send(ev, f"[CQ:music,type=163,id={song_id}]")
