@@ -6,6 +6,7 @@ import json
 
 sv = Service("点歌")
 
+COMMENTS_LIMIT=3
 
 @sv.on_prefix("点歌")
 async def pick_song(bot, ev):
@@ -17,16 +18,16 @@ async def pick_song(bot, ev):
     song_id=get_songid(song_name=song_name,cookie=cookie)
     await bot.send(ev, f"[CQ:music,type=163,id={song_id}]")
     song_comments = requests.get(
-        f'http://127.0.0.1:3000/comment/hot?id={song_id}&type=0&limit=3', cookies=cookie)
+        f'http://127.0.0.1:3000/comment/hot?id={song_id}&type=0&limit={COMMENTS_LIMIT}', cookies=cookie)
     song_comments = song_comments.json()
     try:
         output_comments = "下面为您播送热评：\n"
-        for i in range(3):
+        for i in range(COMMENTS_LIMIT):
             output_comments = output_comments + \
                 song_comments['hotComments'][i]['user']['nickname']+':'
             output_comments = output_comments + \
                 song_comments['hotComments'][i]['content']
-            if i != 2:
+            if i != COMMENTS_LIMIT-1:
                 output_comments = output_comments+'\n'
         await bot.send(ev, output_comments)
     except:
