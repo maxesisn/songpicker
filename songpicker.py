@@ -47,8 +47,17 @@ def login():
         return cookie
     except:
         login_url = 'http://127.0.0.1:3000/login/cellphone'
-        phone = '14729020242'
-        password = 'snwbc710286'
+        account_config = {}
+        if os.path.exists('./hoshino/modules/songpicker/account.json'):
+            with open("./hoshino/modules/songpicker/account.json","r",encoding='utf-8') as dump_f:
+                try:
+                    # 读取错误一般是人工改动了config并且导致json格式错误
+                    account_config = json.load(dump_f)
+                    print("已读取网易云账号配置")
+                except:
+                    account_config = {}
+        phone = account_config['phone']
+        password = account_config['password']
         login_url = login_url+f'?phone={phone}'+f'&password={password}'
         try:
             res = requests.post(url=login_url)
