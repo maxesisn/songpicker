@@ -91,7 +91,7 @@ def get_songid(song_name, cookie):
             final_song_info = final_song_info+"\n"
     msg = '已找到如下歌曲，请回复序号选择：\n'+final_song_info
     print(msg)
-    song_num=1
+    song_num=1 #先直接返回1凑合用，之后再写选歌模块
     return search_result['result']['songs'][song_num-1]['id']
 
 
@@ -105,7 +105,7 @@ def check_login_status(cookie):
         return f"登录状态异常，错误码{status_result['code']}"
 
 
-def get_song_info(song_id, cookie):
+def get_song_info(song_id, cookie): #用于选歌模块的信息提示，闲置中
     song_id_str = ''
     for i in range(SONGS_LIMIT):
         song_id_str = song_id_str+str(song_id[i])
