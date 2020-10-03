@@ -9,7 +9,8 @@ sv = Service("点歌")
 
 SONGS_LIMIT = 3
 COMMENTS_LIMIT = 3
-WAIT_TIME=20
+WAIT_TIME = 20
+
 
 @sv.on_prefix("点歌")
 async def pick_song(bot, ev):
@@ -21,7 +22,7 @@ async def pick_song(bot, ev):
     cookie = login()
     song_id = get_songid(song_name, cookie)
     await bot.send(ev, f"[CQ:music,type=163,id={song_id}]")
-    #处理热评
+    # 处理热评
     song_comments = requests.get(
         f'http://127.0.0.1:3000/comment/hot?id={song_id}&type=0&limit={COMMENTS_LIMIT}',
         cookies=cookie)
@@ -45,6 +46,7 @@ async def pick_song(bot, ev):
 async def check_login_status(bot, ev):
     cookie = login()
     await bot.send(ev, check_login_status(cookie=cookie))
+
 
 def login():
     try:
@@ -75,6 +77,7 @@ def login():
         except Exception as err:
             print('获取cookie失败：\n{0}'.format(err))
 
+
 def get_songid(song_name, cookie):
     song_id = {}
     search_result = requests.get(
@@ -91,7 +94,8 @@ def get_songid(song_name, cookie):
             final_song_info = final_song_info+"\n"
     msg = '已找到如下歌曲，请回复序号选择：\n'+final_song_info
     print(msg)
-    song_num=1 #先直接返回1凑合用，之后再写选歌模块
+    song_num_waiter.picker_id
+    song_num = 1
     return search_result['result']['songs'][song_num-1]['id']
 
 
@@ -105,7 +109,7 @@ def check_login_status(cookie):
         return f"登录状态异常，错误码{status_result['code']}"
 
 
-def get_song_info(song_id, cookie): #用于选歌模块的信息提示，闲置中
+def get_song_info(song_id, cookie):
     song_id_str = ''
     for i in range(SONGS_LIMIT):
         song_id_str = song_id_str+str(song_id[i])
@@ -120,3 +124,10 @@ def get_song_info(song_id, cookie): #用于选歌模块的信息提示，闲置�
         song_info[i] = str(song_info_result['songs'][i]['name']) + \
             " - "+str(song_info_result['songs'][i]['ar'][0]['name'])
     return song_info
+
+
+@sv.on_rex(r'^[1-5]$')#用不了session.get()，手搓一个代替一下
+async def song_num_waiter(bot, ev):
+    picker_id=0
+
+    return ev
