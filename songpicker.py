@@ -94,7 +94,6 @@ def get_songid(song_name, cookie):
             final_song_info = final_song_info+"\n"
     msg = '已找到如下歌曲，请回复序号选择：\n'+final_song_info
     print(msg)
-    song_num_waiter.picker_id
     song_num = 1
     return search_result['result']['songs'][song_num-1]['id']
 
@@ -125,9 +124,3 @@ def get_song_info(song_id, cookie):
             " - "+str(song_info_result['songs'][i]['ar'][0]['name'])
     return song_info
 
-
-@sv.on_rex(r'^[1-5]$')#用不了session.get()，手搓一个代替一下
-async def song_num_waiter(bot, ev):
-    picker_id=0
-
-    return ev
